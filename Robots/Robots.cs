@@ -216,16 +216,15 @@ namespace Robots
                 return true;
 
 
-            string[] uriParts = uri.LocalPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string uriParts = uri.LocalPath;
             foreach (var disallowEntry in userAgentEntry.DisallowEntries)
             {
-                bool result;
-                if (CheckDisallowedEntry(disallowEntry, uriParts, out result))
+                if (CheckDisallowedEntry(disallowEntry, uriParts))
                 {
                     if (CheckExplicitlyAllowed(userAgentEntry, uri))
                         return true;
 
-                    return result;
+                    return false;
                 }
             }
 
@@ -320,87 +319,26 @@ namespace Robots
             //if (!IsInternalToDomain(uri))
             //    return true;
 
-            string[] uriParts = uri.LocalPath.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            string uriParts = uri.LocalPath;
             foreach (var allowEntry in userAgentEntry.AllowEntries)
             {
-                bool result;
-                if (CheckAllowedEntry(allowEntry, uriParts, out result))
+                if (CheckAllowedEntry(allowEntry, uriParts))
                 {
-                    return result;
+                    return true;
                 }
             }
 
             return false;
         }
 
-        private static bool CheckAllowedEntry(AllowEntry entry, string[] uriParts, out bool allow)
+        private static bool CheckAllowedEntry(AllowEntry entry, string uriParts)
         {
-            allow = true;
-            string[] robotInstructionUriParts = entry.Url.LocalPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (robotInstructionUriParts.Length > uriParts.Length)
-                return false;
-
-            bool mismatch = false;
-            for (int i = 0; i < Math.Min(robotInstructionUriParts.Length, uriParts.Length); i++)
-            {
-                if (string.Compare(uriParts[i], robotInstructionUriParts[i], true) != 0)
-                {
-                    mismatch = true;
-                    break;
-                }
-            }
-            if (mismatch)
-            {
-                return false;
-            }
-
-            return true;
+            return entry.Regex.IsMatch(uriParts);
         }
 
-        private static bool CheckDisallowedEntry(DisallowEntry entry, string[] uriParts, out bool allow)
+        private static bool CheckDisallowedEntry(DisallowEntry entry, string uriParts)
         {
-            allow = true;
-            string[] robotInstructionUriParts = entry.Url.LocalPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (robotInstructionUriParts.Length > uriParts.Length)
-                return false;
-
-            int end = Math.Min(robotInstructionUriParts.Length, uriParts.Length);
-            bool mismatch = false;
-            for (int i = 0; i < end; i++)
-            {
-                int index1 = i, index2 = i;
-                if (entry.Inverted)
-                {
-                    index1 = robotInstructionUriParts.Length - i - 1;
-                    index2 = uriParts.Length - i - 1;
-                }
-                if (IsMismatch(robotInstructionUriParts[index1], uriParts[index2]))
-                {
-                    mismatch = true;
-                    break;
-                }
-            }
-            if (!mismatch)
-            {
-                allow = false;
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool IsMismatch(string regsiteredPart, string testedPart)
-        {
-            if (string.Compare("*", regsiteredPart, true) == 0)
-                return false;
-            if (string.Compare(testedPart, regsiteredPart, true) == 0)
-                return false;
-            if (testedPart.StartsWith(regsiteredPart, StringComparison.InvariantCultureIgnoreCase))
-                return false;
-
-            return true;
+            return entry.Regex.IsMatch(uriParts);
         }
 
         #endregion
