@@ -9,9 +9,7 @@ namespace Robots.Model
             : base(type)
         { }
 
-        public bool Inverted { get; set; }
-        
-        public Uri Url { get; set; }
+        public string Url { get; set; }
 
         private Regex _regex = null;
         public Regex Regex
@@ -26,7 +24,7 @@ namespace Robots.Model
         {
             return new Regex(
                 "^" +
-                Regex.Escape(Url.LocalPath)
+                Regex.Escape(Url)
                     .Replace(@"/\*\$", "/[^/]*$")
                     .Replace(@"/\*/", "/[^/]*/")
                     .Replace(@"\*", ".*")

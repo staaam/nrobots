@@ -39,7 +39,7 @@ namespace Robots.Fluent
 
         public RobotsBuilder DisallowWithComment(string url, string comment)
         {
-            var disallowEntry = new DisallowEntry { Url = new Uri(_robots.BaseUri, url), Comment = comment };
+            var disallowEntry = new DisallowEntry { Url = url, Comment = comment };
             _lastUserAgent.AddEntry(disallowEntry);
 
             return this;
@@ -52,7 +52,7 @@ namespace Robots.Fluent
 
         public RobotsBuilder DisallowWithComment(Uri uri, string comment)
         {
-            var disallowEntry = new DisallowEntry { Url = uri, Comment = comment };
+            var disallowEntry = new DisallowEntry { Url = uri.PathAndQuery, Comment = comment };
             _lastUserAgent.AddEntry(disallowEntry);
 
             return this;
@@ -66,7 +66,7 @@ namespace Robots.Fluent
 
         public RobotsBuilder AllowWithComment(string url, string comment)
         {
-            var allowEntry = new AllowEntry { Url = new Uri(_robots.BaseUri, url), Comment = comment };
+            var allowEntry = new AllowEntry { Url = url, Comment = comment };
             _lastUserAgent.AddEntry(allowEntry);
 
             return this;
@@ -79,7 +79,7 @@ namespace Robots.Fluent
 
         public RobotsBuilder AllowWithComment(Uri uri, string comment)
         {
-            var allowEntry = new AllowEntry { Url = uri, Comment = comment };
+            var allowEntry = new AllowEntry { Url = uri.PathAndQuery, Comment = comment };
             _lastUserAgent.AddEntry(allowEntry);
 
             return this;

@@ -249,7 +249,8 @@ Disallow: /bbb
         [TestMethod]
         public void Disallow_private_folder_wildcard_content_Test()
         {
-            bool actual = RobotsWildcards.Allowed("/folder/private");
+            Assert.IsTrue(RobotsWildcards.Allowed("/folder/private"));
+            bool actual = RobotsWildcards.Allowed("/folder/private/");
             Assert.AreEqual(false, actual);
         }
 
@@ -333,8 +334,8 @@ Disallow: /bbb
         [TestMethod]
         public void Uri_loaded_disallow_subfolder_Test()
         {
-            Assert.AreEqual(false, RobotsUrl.Allowed("/cashback/admin"));
-            Assert.AreEqual(false, RobotsUrl.Allowed("/cashback/admin/aaa/tool.html"));
+            Assert.AreEqual(false, RobotsUrl.Allowed("/hotels/search"));
+            Assert.AreEqual(false, RobotsUrl.Allowed("/hotels/search/aaa/tool.html"));
         }
 
         [TestMethod]

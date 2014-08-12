@@ -82,7 +82,7 @@ namespace Robots.Model
                     type = EntryType.UserAgent;
                     entry = CreateEntry(type);
                     entry.Comment = comment;
-                    string userAgent = entryText.Substring(USER_AGENT_KEYWORD.Length).Trim().TrimEnd('?');;
+                    string userAgent = entryText.Substring(USER_AGENT_KEYWORD.Length).Trim();
 
                     if(userAgent == null || string.IsNullOrEmpty(userAgent.Trim()))
                     {
@@ -97,37 +97,25 @@ namespace Robots.Model
                 else if (entryText.StartsWith(DISALLOW_KEYWORD, true, CultureInfo.InvariantCulture))
                 {
                     type = EntryType.Disallow;
-                    bool inverted = entryText.EndsWith("$");
-                    string value = entryText.Substring(DISALLOW_KEYWORD.Length).Trim().TrimEnd('?');
+                    string value = entryText.Substring(DISALLOW_KEYWORD.Length).Trim();
 
-                    Uri url;
-                    if (Uri.TryCreate(baseUri, value, out url))
-                    {
-                        entry = CreateEntry(type);
-                        entry.Comment = comment;
-                        ((UrlEntry)entry).Url = url;
-                        ((UrlEntry)entry).Inverted = inverted;
-                    }
+                    entry = CreateEntry(type);
+                    entry.Comment = comment;
+                    ((UrlEntry)entry).Url = value;
                 }
                 else if (entryText.StartsWith(ALLOW_KEYWORD, true, CultureInfo.InvariantCulture))
                 {
                     type = EntryType.Allow;
-                    bool inverted = entryText.EndsWith("$");
-                    string value = entryText.Substring(ALLOW_KEYWORD.Length).Trim().TrimEnd('?');
+                    string value = entryText.Substring(ALLOW_KEYWORD.Length).Trim();
 
-                    Uri url;
-                    if (Uri.TryCreate(baseUri, value, out url))
-                    {
-                        entry = CreateEntry(type);
-                        entry.Comment = comment;
-                        ((UrlEntry)entry).Url = url;
-                        ((UrlEntry)entry).Inverted = inverted;
-                    }
+                    entry = CreateEntry(type);
+                    entry.Comment = comment;
+                    ((UrlEntry)entry).Url = value;
                 }
                 else if (entryText.StartsWith(CRAWL_DELAY_KEYWORD, true, CultureInfo.InvariantCulture))
                 {
                     type = EntryType.CrawlDelay;
-                    string value = entryText.Substring(CRAWL_DELAY_KEYWORD.Length).Trim().TrimEnd('?');
+                    string value = entryText.Substring(CRAWL_DELAY_KEYWORD.Length).Trim();
 
                     entry = CreateEntry(type);
                     entry.Comment = comment;
@@ -144,7 +132,7 @@ namespace Robots.Model
                 else if (entryText.StartsWith(SITEMAP_KEYWORD, true, CultureInfo.InvariantCulture))
                 {
                     type = EntryType.Sitemap;
-                    string value = entryText.Substring(SITEMAP_KEYWORD.Length).Trim().TrimEnd('?');
+                    string value = entryText.Substring(SITEMAP_KEYWORD.Length).Trim();
 
                     entry = CreateEntry(type);
                     entry.Comment = comment;

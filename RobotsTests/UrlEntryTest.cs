@@ -59,28 +59,15 @@ namespace RobotsTests
         {
             UrlEntry target = CreateUrlEntry(); // TODO: Initialize to an appropriate value
             var expected = new Uri("http://www.microsoft.com");
-            target.Url = expected;
-            Uri actual = target.Url;
-            Assert.Equal(expected, actual);
+            target.Url = expected.PathAndQuery;
+            string actual = target.Url;
+            Assert.Equal(expected.PathAndQuery, actual);
        }
 
         internal virtual UrlEntry CreateUrlEntry()
         {
             UrlEntry target = new AllowEntry();
             return target;
-        }
-
-        /// <summary>
-        ///A test for Inverted
-        ///</summary>
-        [TestMethod]
-        public void InvertedTest()
-        {
-            UrlEntry target = CreateUrlEntry(); // TODO: Initialize to an appropriate value
-            const bool expected = true;
-            target.Inverted = expected;
-            bool actual = target.Inverted;
-            Assert.Equal(expected, actual);
         }
     }
 }

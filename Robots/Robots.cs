@@ -216,10 +216,9 @@ namespace Robots
                 return true;
 
 
-            string uriParts = uri.LocalPath;
             foreach (var disallowEntry in userAgentEntry.DisallowEntries)
             {
-                if (CheckDisallowedEntry(disallowEntry, uriParts))
+                if (CheckDisallowedEntry(disallowEntry, uri))
                 {
                     if (CheckExplicitlyAllowed(userAgentEntry, uri))
                         return true;
@@ -319,10 +318,9 @@ namespace Robots
             //if (!IsInternalToDomain(uri))
             //    return true;
 
-            string uriParts = uri.LocalPath;
             foreach (var allowEntry in userAgentEntry.AllowEntries)
             {
-                if (CheckAllowedEntry(allowEntry, uriParts))
+                if (CheckAllowedEntry(allowEntry, uri))
                 {
                     return true;
                 }
@@ -331,14 +329,14 @@ namespace Robots
             return false;
         }
 
-        private static bool CheckAllowedEntry(AllowEntry entry, string uriParts)
+        private static bool CheckAllowedEntry(AllowEntry entry, Uri uri)
         {
-            return entry.Regex.IsMatch(uriParts);
+            return entry.Regex.IsMatch(uri.PathAndQuery);
         }
 
-        private static bool CheckDisallowedEntry(DisallowEntry entry, string uriParts)
+        private static bool CheckDisallowedEntry(DisallowEntry entry, Uri uri)
         {
-            return entry.Regex.IsMatch(uriParts);
+            return entry.Regex.IsMatch(uri.PathAndQuery);
         }
 
         #endregion

@@ -120,7 +120,7 @@ namespace RobotsTests
             Assert.Equal(true, actual);
             Assert.Equal(EntryType.Disallow, entry.Type);
             Assert.NotNull(((DisallowEntry)entry).Url);
-            Assert.Equal("/web", ((DisallowEntry)entry).Url.LocalPath);
+            Assert.Equal("/web", ((DisallowEntry)entry).Url);
             Assert.Equal("comment", entry.Comment);
         }
 
@@ -135,7 +135,7 @@ namespace RobotsTests
             Assert.Equal(true, actual);
             Assert.Equal(EntryType.Allow, entry.Type);
             Assert.NotNull(((AllowEntry)entry).Url);
-            Assert.Equal("/web", ((AllowEntry)entry).Url.LocalPath);
+            Assert.Equal("/web", ((AllowEntry)entry).Url);
         }
 
         [TestMethod]
